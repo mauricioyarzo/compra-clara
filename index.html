@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#102a2b">
+    <title>Compra Clara</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Lista inteligente</p>
+          <h1>Compra Clara</h1>
+        </div>
+        <button class="icon-button" id="installButton" hidden aria-label="Instalar app" title="Instalar app">
+          <span aria-hidden="true">+</span>
+        </button>
+      </section>
+
+      <section class="budget-panel" aria-label="Resumen de compra">
+        <label class="budget-field">
+          <span>Presupuesto</span>
+          <input id="budgetInput" inputmode="decimal" type="number" min="0" step="100" placeholder="0">
+        </label>
+        <div class="total-card" id="totalCard">
+          <span>Total acumulado</span>
+          <strong id="totalAmount">$0</strong>
+          <small id="budgetStatus">Sin presupuesto definido</small>
+        </div>
+      </section>
+
+      <section class="actions">
+        <button class="primary-button" id="scanButton">
+          <span aria-hidden="true">▣</span>
+          Escanear código
+        </button>
+        <button class="secondary-button" id="manualButton">
+          <span aria-hidden="true">⌕</span>
+          Ingresar manual
+        </button>
+      </section>
+
+      <section class="list-section" aria-label="Productos agregados">
+        <div class="section-title">
+          <h2>Tu compra</h2>
+          <button class="text-button" id="clearButton">Limpiar</button>
+        </div>
+        <div class="empty-state" id="emptyState">
+          <strong>Escanea el primer producto</strong>
+          <span>La lista aparecerá aquí y podrás modificar cantidades, precios o eliminar productos.</span>
+        </div>
+        <ul class="shopping-list" id="shoppingList"></ul>
+      </section>
+    </main>
+
+    <dialog class="scanner-modal" id="scannerModal" aria-labelledby="scannerTitle">
+      <div class="modal-head">
+        <h2 id="scannerTitle">Escanear producto</h2>
+        <button class="icon-button ghost" id="closeScanner" aria-label="Cerrar">×</button>
+      </div>
+      <div class="camera-frame">
+        <video id="cameraPreview" playsinline muted></video>
+        <div class="scan-line" aria-hidden="true"></div>
+      </div>
+      <p class="helper-text" id="scannerMessage">Apunta la cámara al código de barras.</p>
+    </dialog>
+
+    <dialog class="product-modal" id="productModal" aria-labelledby="productTitle">
+      <form method="dialog" id="productForm">
+        <div class="modal-head">
+          <h2 id="productTitle">Producto escaneado</h2>
+          <button class="icon-button ghost" value="cancel" aria-label="Cerrar">×</button>
+        </div>
+
+        <label class="form-field">
+          <span>Código</span>
+          <input id="codeInput" autocomplete="off" required>
+        </label>
+        <label class="form-field">
+          <span>Nombre del producto</span>
+          <input id="nameInput" autocomplete="off" placeholder="Ej: Leche descremada" required>
+        </label>
+        <label class="form-field">
+          <span>Precio unitario</span>
+          <input id="priceInput" inputmode="decimal" type="number" min="0" step="1" placeholder="0" required>
+        </label>
+        <p class="form-note">El precio se completa a mano porque no viene dentro del código de barras.</p>
+        <label class="form-field quantity-field">
+          <span>Cuantos productos llevará</span>
+          <div class="quantity-control">
+            <button type="button" id="decreaseQty" aria-label="Disminuir cantidad">−</button>
+            <input id="quantityInput" inputmode="numeric" type="number" min="1" step="1" value="1" required>
+            <button type="button" id="increaseQty" aria-label="Aumentar cantidad">+</button>
+          </div>
+        </label>
+
+        <button class="primary-button wide" id="acceptProduct" value="default">Aceptar</button>
+      </form>
+    </dialog>
+
+    <template id="itemTemplate">
+      <li class="shopping-item">
+        <div class="item-main">
+          <input class="item-name" aria-label="Nombre del producto">
+          <small class="item-code"></small>
+        </div>
+        <div class="item-controls">
+          <label>
+            <span>Cant.</span>
+            <input class="item-qty" inputmode="numeric" type="number" min="1" step="1">
+          </label>
+          <label>
+            <span>Precio</span>
+            <input class="item-price" inputmode="decimal" type="number" min="0" step="1">
+          </label>
+          <strong class="item-subtotal"></strong>
+          <button class="delete-button" aria-label="Eliminar producto">×</button>
+        </div>
+      </li>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
